@@ -50,9 +50,110 @@
                                 </button>
                             </div>
                         </div>
-
+                    <div class="modal fade" id="add_actualite" tabindex="-1" aria-labelledby="add_actualite_label" aria-hidden="true" >
+                    <div class="modal-dialog modal-lg" >
+                        <div class="modal-content">
+                        <div class="modal-header">
+                              <h4 class="modal-title" id="add_actualite_label"><b>Ajouter une nouvelle actualite</b></h4>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                        <div class="stepwizard">
+                            <div class="stepwizard-row setup-panel" id="add_actualite">
+                                <div class="multi-wizard-step">
+                                    <a href="#step-1" type="button" class="btn {{ $currentStep = 1 ? 'btn-default' : 'btn-primary' }}">1</a>
+                                    <p> Step 1 </p>
+                                </div>
+                                <div class="multi-wizard-step">
+                                    <a href="#step-2" type="button" class="btn {{ $currentStep != 2 ? 'btn-default' : 'btn-primary' }}">2</a>
+                                    <p> Step 2 </p>
+                                </div>
+                                <div class="multi-wizard-step">
+                                    <a href="#step-3" type="button" class="btn {{ $currentStep != 3 ? 'btn-default' : 'btn-primary' }}" disabled = "disabled">3</a>
+                                    <p> Step 3 </p>
+                                </div>
+                            </div>
+                        </div>
+                    <form class="form-outline" method="post" action="/acces_partenaire/actualites/create" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row setup-content {{ $currentStep != 1 ? 'display-none' : '' }}" id="step-1">
+                            <div class="col-md-12">
+                                <h3> Step 1 </h3>
+                                <div class="form-group">
+                                    <label for="title"> Titre de l'actualité : </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="titre" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                        <label class="col-sm-3 col-form-label">Resumé</label>
+                                       <div class="col-sm-8">
+                                      <textarea type="text" name="resume" class="form-control"></textarea>
+                                        <script src="{{ asset('node_modules/tinymce/tinymce.js') }}"></script>
+                                            <script>
+                                                 tinymce.init({
+                                                 selector: 'textarea',
+                                                 height: 300,
+                                                 plugins: [
+                                                 'advlist autolink lists link charmap print preview anchor',
+                                                 'searchreplace visualblocks code fullscreen',
+                                                 'insertdatetime media table paste code help wordcount'
+                                                 ],
+                                                 toolbar: 'undo redo | formatselect | ' +
+                                                      'bold italic backcolor | alignleft aligncenter ' +
+                                                      'alignright alignjustify | bullist numlist outdent indent | ' +
+                                                      'removeformat | help',
+                                                 });
+                                             </script>
+                                        </div>
+                                   <button class="btn btn-primary nextBtn btn-lg pull-right" wire:click="firstStepSubmit" type="button"> Next </button>
+                                   </div>
+                                   </div>
+                                <div class="row setup-content {{ $currentStep != 2 ? 'display-none' : '' }}" id="step-2">
+                            <div class="col-md-12">
+                                <h3> Step 2 </h3>
+                                <div class="form-group">
+                                    <label for="title"> date: </label>
+                                    <div class="col-sm-8">
+                                    <input type="date" name="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                <label for="title"> importance </label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="titre" class="form-control">
+                                </div>
+                            </div>
+                                <button class="btn btn-primary nextBtn btn-lg pull-right" wire:click="secondStepSubmit" type="button"> Next </button>
+                                <button class="btn btn-danger nextBtn btn-lg pull-right" type="button" wire:click="back(1)">Back</button>
+                        </div>
+                        </div>
+                        <div class="row setup-content {{ $currentStep != 3 ? 'display-none' : '' }}" id="step-3">
+                        <div class="col-md-12">
+                            <h3>step 3 </h3>
+                            <div class="form-group">
+                                <label for="title"> type </label>
+                                <div class="col-sm-8">
+                                <input type="text" name="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                 <label class="col-sm-3 col-form-label">Image</label>
+                                <div class="col-sm-8">
+                                <input class="form-control" type="file" name="img">
+                                <small style="font-size: 10px;">Veulliez utiliser des photos de dimention 1028px*720px</small>
+                                </div>
+                            </div>
+                            <button class="btn btn-success btn-lg pull-right" wire:click="submitForm" type="submit">Finish!</button>
+                            <button class="btn btn-danger nextBtn btn-lg pull-right" type="button" wire:click="back(2)">Back</button>
+                        </div>
+                        </div>  
+                    </div>
+                 </form>
+                </div>  
+                </div>
+            </div>
                         <!-- New actualite Modal -->
-                        <div class="modal fade" id="add_actualite" tabindex="-1" aria-labelledby="add_actualite_label" aria-hidden="true" >
+                        <!-- <div class="modal fade" id="add_actualite" tabindex="-1" aria-labelledby="add_actualite_label" aria-hidden="true" >
                             <div class="modal-dialog modal-lg" >
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -137,7 +238,7 @@
                                     </form>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- update actualite Modal -->
                         <div class="modal fade" id="update_actualite" tabindex="-1" aria-labelledby="update_actualite_label" aria-hidden="true">
@@ -270,9 +371,9 @@
                                             <td>{{$actualite->importance}}</td>
                                             <td>{{$actualite->type == 'evenement' ? 'Événement' : 'Actualité'}}</td>
                                             <td class="w-25">
-                                                <a class="btn btn-success" href="/actualites/{{$actualite->id}}">Afficher</a>
-                                                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update_actualite" onclick="getUpdatingActualite({{$actualite->id}},'{{$actualite->titre}}','{{$actualite->date}}','{{$actualite->resume}}', {{$actualite->importance}},'{{$actualite->type}}')">Modifier</a>
-                                                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_actualite" onclick="getDeletingActualite({{$actualite->id}},'{{$actualite->titre}}')">Supprimer</a>
+                                                <a class="btn btn-success" href="/actualites/{{$actualite->id}}">Afficher</a> <br /><br />
+                                                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update_actualite" onclick="getUpdatingActualite({{$actualite->id}},'{{$actualite->titre}}','{{$actualite->date}}','{{$actualite->resume}}', {{$actualite->importance}},'{{$actualite->type}}')">Modifier</a><br /> <br />
+                                                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_actualite" onclick="getDeletingActualite({{$actualite->id}},'{{$actualite->titre}}')">Supprimer</a><br /> <br />
                                             </td>
                                         </tr>
                                     @endforeach

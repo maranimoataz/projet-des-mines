@@ -11,6 +11,10 @@ use Intervention\Image\Facades\Image;
 
 class actualitesController extends Controller
 {
+    public $currentStep = 1;
+    public $name, $price, $detail, $status = 1;
+    public $successMsg = '';
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -24,27 +28,43 @@ class actualitesController extends Controller
         return view('acces_partenaire.actualites', compact('actualites'));
     }
 
-    public function store(){
-        $data = \request()->validate([
+    //wizard form
+    public function firstStepSubmit()
+    {
+        $validatedData = $this->validate([
             'titre' => 'required',
-            'date' => ['required', 'date','date_format:Y-m-d'],
-            'resume' => ['required', 'string', 'min:130'],
-            'importance' => ['required', 'digits_between:1,5'],
-            'type' => ['required', 'in:evenement,actualite'],
-            'img' => ['required', 'image']
+            'resume'=> 'required|string|min:130',
         ]);
-        $imagePath = 'storage/'.\request('img')->store('uploads', 'public');
+        $this->currentStep = 2;
+    }
+
+    public function secondStepSubmit(){
+        $validatedData = $this->validate([
+            'date' => 'required|date|date_format:Y-m-d',
+            'importance'=>'required,digits_between:1,5',
+        ]);
+        $this->currentStep = 3;
+    }
+
+    public function thirdStepSubmit(){
+        $validatedData = $this->validate([
+            'type'=>'required|in:evenement,actualite',
+            'img'=>'required,image',
+        ]);
+        $this->currentStep = 4;
+    }
+
+    public function submitForm(){
+        $imagePath = 'storage/'.\request('img')->store('uploads','public');
         $image = Image::make(public_path($imagePath))->fit(1280,720);
         $image->save();
-        $data['titre'] = ucfirst($data['titre']);
-        $data['resume'] = ucfirst($data['resume']);
-        $actualite = actualite::create([
-            'titre' => $data['titre'],
-            'date' => $data['date'],
-            'resume' => $data['resume'],
-            'importance' => $data['importance'],
-            'type' => $data['type'],
-            'img' => $imagePath
+        actualite::create([
+            'titre' => $this->titre,
+            'resume' => $this->resume,
+            'date' => $this->date,
+            'importance' => $this->importance,
+            'type' => $this->type,
+            'img' => $imagePath,
         ]);
         historique::create([
             'user_id' => Auth::user()->id,
@@ -52,6 +72,40 @@ class actualitesController extends Controller
         ]);
         return redirect()->route('accesPartnersActualites.show')->with('success', 'The actuality with the ID ' .  $actualite->id . ' has been added successfully');
     }
+
+    public function back($step)
+    {
+        $this->currentStep = $step;    
+    }
+  
+    // public function store(){
+    //     $data = \request()->validate([
+    //         'titre' => 'required',
+    //         'date' => ['required', 'date','date_format:Y-m-d'],
+    //         'resume' => ['required', 'string', 'min:130'],
+    //         'importance' => ['required', 'digits_between:1,5'],
+    //         'type' => ['required', 'in:evenement,actualite'],
+    //         'img' => ['required', 'image']
+    //     ]);
+    //     $imagePath = 'storage/'.\request('img')->store('uploads', 'public');
+    //     $image = Image::make(public_path($imagePath))->fit(1280,720);
+    //     $image->save();
+    //     $data['titre'] = ucfirst($data['titre']);
+    //     $data['resume'] = ucfirst($data['resume']);
+    //     $actualite = actualite::create([
+    //         'titre' => $data['titre'],
+    //         'date' => $data['date'],
+    //         'resume' => $data['resume'],
+    //         'importance' => $data['importance'],
+    //         'type' => $data['type'],
+    //         'img' => $imagePath
+    //     ]);
+    //     historique::create([
+    //         'user_id' => Auth::user()->id,
+    //         'action' => 'Create a new actuality with the ID : ' . $actualite->id
+    //     ]);
+    //     return redirect()->route('accesPartnersActualites.show')->with('success', 'The actuality with the ID ' .  $actualite->id . ' has been added successfully');
+    // }
 
     public function update(actualite $actualite){
         $data = \request()->validate([
