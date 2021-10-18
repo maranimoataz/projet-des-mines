@@ -1,0 +1,111 @@
+; JMCR.INF
+; Copyright (C) JMicron Technology Corp.
+;
+
+[Version]
+Signature="$Windows NT$"
+Class = SCSIAdapter
+ClassGuid = {4d36e97b-e325-11ce-bfc1-08002be10318}
+Provider=%JMICRON%
+DriverVer=04/26/2013, 1.0.76.1
+CatalogFile=jmcr.cat
+
+[DestinationDirs]
+DefaultDestDir      = 12  ; dirid = \Drivers on WinNT platforms
+JMCR.DriverFiles    = 12
+JMCR.IconFiles      = 11
+
+[Manufacturer]
+%JMICRON%=JMCRModels
+
+[JMCRModels]
+%JmSdHost.DeviceDesc%    = JM , PCI\VEN_197B&DEV_2386
+%JmSdMmcHost.DeviceDesc% = JM , PCI\VEN_197B&DEV_2387
+%JmMsHost.DeviceDesc%    = JM , PCI\VEN_197B&DEV_2388
+%JmXdHost.DeviceDesc%    = JM , PCI\VEN_197B&DEV_2389
+%JmSdHost.DeviceDesc%    = JM , PCI\VEN_197B&DEV_2391
+%JmSdMmcHost.DeviceDesc% = JM , PCI\VEN_197B&DEV_2392
+%JmMsHost.DeviceDesc%    = JM , PCI\VEN_197B&DEV_2393
+%JmXdHost.DeviceDesc%    = JM , PCI\VEN_197B&DEV_2394
+
+%JmSdHost.DeviceDesc%    = JM , PCI\VEN_197B&DEV_2386&SUBSYS_392117AA ; Quanta
+%JmSdMmcHost.DeviceDesc% = JM , PCI\VEN_197B&DEV_2387&SUBSYS_392217AA
+%JmMsHost.DeviceDesc%    = JM , PCI\VEN_197B&DEV_2388&SUBSYS_392317AA
+%JmXdHost.DeviceDesc%    = JM , PCI\VEN_197B&DEV_2389&SUBSYS_392417AA
+
+
+[ControlFlags]
+ExcludeFromSelect=*
+
+[JM.NT]
+CopyFiles=JMCR.DriverFiles
+CopyFiles=JMCR.IconFiles
+AddReg=Inst.AddReg
+
+[JMCR.DriverFiles]
+jmcr.sys
+
+[JMCR.IconFiles]
+jmcricon.dll
+
+[Inst.AddReg]
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskJMCR____SD/MMC______________","Label",,"SD/MMC"
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskJMCR____SD/MMC______________","NoSoftEject",0x00010001,0x00000001
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskJMCR____SD/MMC_B____________","Label",,"SD/MMC"
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskJMCR____SD/MMC_B____________","NoSoftEject",0x00010001,0x00000001
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskJMCR____MS__________________","Label",,"MemoryStick"
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskJMCR____MS__________________","NoSoftEject",0x00010001,0x00000001
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskJMCR____MS_B________________","Label",,"MemoryStick"
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskJMCR____MS_B________________","NoSoftEject",0x00010001,0x00000001
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskJMCR____XD__________________","Label",,"xD"
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskJMCR____XD__________________","NoSoftEject",0x00010001,0x00000001
+; Setup Program will copy icon files and set the registry "Icons" and "NoMeidaIcons".
+
+;[JM.NT.HW]
+;AddReg = JM_HW.AddReg
+
+;[JM_HW.AddReg]
+
+[JM.NT.Services]
+AddService = JMCR, 2, JM_Service_Inst, JM_EventLog_Inst
+
+[JM_Service_Inst]
+ServiceType    = 1      ; SERVICE_KERNEL_DRIVER
+StartType      = 0      ; SERVICE_BOOT_START
+ErrorControl   = 1      ; SERVICE_ERROR_NORMAL
+LoadOrderGroup = SCSI Miniport
+ServiceBinary  = %12%\jmcr.sys
+AddReg         = DriverAddReg
+
+[DriverAddReg]
+HKR, "Parameters\PnpInterface", "5", 0x00010001, 0x00000001
+HKR, "Parameters", "BusType", 0x00010001, 0x00000000
+HKR, "Parameters\Device", "CreateInitiatorLU", 0x00010001, 0x00000001
+HKR, "Private", "SupportBoot", 0x00010001, 0x00000001
+
+[JM_EventLog_Inst]
+AddReg = JM_EventLog_AddReg
+
+[JM_EventLog_AddReg]
+HKR,,EventMessageFile,0x00020000,"%SystemRoot%\System32\IoLogMsg.dll;%SystemRoot%\System32\drivers\jmcr.sys"
+HKR,,TypesSupported,0x00010001,7
+
+[SourceDisksNames]
+1 = %DISKNAME%,,,,
+
+[SourceDisksFiles]
+jmcr.sys = 1
+jmcricon.dll = 1
+
+
+[strings]
+JMICRON="JMicron Technology Corp."
+JmSdHost.DeviceDesc="JMicron PCIe SD Host Controller"
+JmSdMmcHost.DeviceDesc="JMicron PCIe SD/MMC Host Controller"
+JmMsHost.DeviceDesc="JMicron PCIe MS Host Controller"
+JmXdHost.DeviceDesc="JMicron PCIe xD Host Controller"
+DISKNAME="JMicron Driver Diskette"
+
+REG_MULTI_SZ    = 0x00010000
+REG_DWORD       = 0x00010001
+REG_SZ          = 0x00000000

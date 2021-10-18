@@ -1,0 +1,104 @@
+; JMCR.INF
+; Copyright (C) JMicron Technology Corp.
+;
+
+[Version]
+Signature="$Windows NT$"
+Class=MTD
+ClassGuid = {4d36e970-e325-11ce-bfc1-08002be10318}
+Provider=%COMPANY%
+DriverVer=04/26/2013, 1.0.76.1
+CatalogFile=jmcr.cat
+;PnpLockDown=1
+
+[DestinationDirs]
+DefaultDestDir   = 12  ; dirid = \Drivers on WinNT platforms
+JMCR.DriverFiles = 12
+JMCR.IconFiles   = 11
+
+[Manufacturer]
+%COMPANY%=JMCRModels
+
+[JMCRModels]
+%PCI\VEN_197B&DEV_2381.DeviceDesc% = JM , PCI\VEN_197B&DEV_2381
+%PCI\VEN_197B&DEV_2381.DeviceDesc% = JM , PCI\VEN_197B&DEV_2381&REV_00  ; For Pre-install on Win7
+%PCI\VEN_197B&DEV_2381.DeviceDesc% = JM , PCI\VEN_197B&DEV_2381&SUBSYS_2381197B ; For Pre-install on Win7
+%PCI\VEN_197B&DEV_2382.DeviceDesc% = JM , PCI\VEN_197B&DEV_2382
+%PCI\VEN_197B&DEV_2383.DeviceDesc% = JM , PCI\VEN_197B&DEV_2383
+%PCI\VEN_197B&DEV_2384.DeviceDesc% = JM , PCI\VEN_197B&DEV_2384
+%PCI\VEN_197B&DEV_2381.DeviceDesc% = JM , PCI\VEN_197B&DEV_2386
+%PCI\VEN_197B&DEV_2381.DeviceDesc% = JM , PCI\VEN_197B&DEV_2386&SUBSYS_2386197B
+%PCI\VEN_197B&DEV_2382.DeviceDesc% = JM , PCI\VEN_197B&DEV_2387
+%PCI\VEN_197B&DEV_2383.DeviceDesc% = JM , PCI\VEN_197B&DEV_2388
+%PCI\VEN_197B&DEV_2384.DeviceDesc% = JM , PCI\VEN_197B&DEV_2389
+%PCI\VEN_197B&DEV_2381.DeviceDesc% = JM , PCI\VEN_197B&DEV_2391
+%PCI\VEN_197B&DEV_2381.DeviceDesc% = JM , PCI\VEN_197B&DEV_2391&SUBSYS_2391197B
+%PCI\VEN_197B&DEV_2382.DeviceDesc% = JM , PCI\VEN_197B&DEV_2392
+%PCI\VEN_197B&DEV_2383.DeviceDesc% = JM , PCI\VEN_197B&DEV_2393
+%PCI\VEN_197B&DEV_2384.DeviceDesc% = JM , PCI\VEN_197B&DEV_2394
+
+
+[ControlFlags]
+ExcludeFromSelect=*
+
+[JM.NT]
+CopyFiles=JMCR.DriverFiles
+CopyFiles=JMCR.IconFiles
+;AddReg=Inst.AddReg
+
+[JMCR.DriverFiles]
+jmcr.sys
+
+[JMCR.IconFiles]
+jmcricon.dll
+
+;[Inst.AddReg]
+
+;[JM.NT.HW]
+;AddReg = JM_HW.AddReg
+
+;[JM_HW.AddReg]
+
+[JM.NT.Services]
+AddService = JMCR, 2, JM_Service_Inst, JM_EventLog_Inst
+
+[JM_Service_Inst]
+ServiceType    = 1      ; SERVICE_KERNEL_DRIVER
+StartType      = 3      ; SERVICE_DEMAND_START
+ErrorControl   = 1      ; SERVICE_ERROR_NORMAL
+;LoadOrderGroup = SCSI Miniport
+ServiceBinary  = %12%\jmcr.sys
+AddReg         = DriverAddReg
+
+[DriverAddReg]
+HKR, "Parameters\PnpInterface", "5", 0x00010001, 0x00000001
+HKR, "Parameters", "BusType", 0x00010001, 0x00000000
+HKR, "Parameters\Device", "CreateInitiatorLU", 0x00010001, 0x00000001
+HKR, "Private", "CustomId", 0x00010001, 0x4E4F4E65
+
+[JM_EventLog_Inst]
+AddReg = JM_EventLog_AddReg
+
+[JM_EventLog_AddReg]
+HKR,,EventMessageFile,0x00020000,"%SystemRoot%\System32\IoLogMsg.dll;%SystemRoot%\System32\drivers\jmcr.sys"
+HKR,,TypesSupported,0x00010001,7
+
+[SourceDisksNames]
+1 = %DISKNAME%,,,,
+
+[SourceDisksFiles]
+jmcr.sys     = 1
+jmcricon.dll = 1
+
+
+[strings]
+COMPANY="Generic"
+PCI\VEN_197B&DEV_2381.DeviceDesc="PCIe SD Host Controller"
+PCI\VEN_197B&DEV_2382.DeviceDesc="PCIe SD/MMC Host Controller"
+PCI\VEN_197B&DEV_2383.DeviceDesc="PCIe MS Host Controller"
+PCI\VEN_197B&DEV_2384.DeviceDesc="PCIe xD Host Controller"
+DISKNAME="Driver Diskette"
+
+REG_MULTI_SZ    = 0x00010000
+REG_DWORD       = 0x00010001
+REG_SZ          = 0x00000000
