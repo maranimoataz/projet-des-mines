@@ -91,7 +91,7 @@ Route::patch('/acces_partenaire/users/{users}/update', '\App\Http\Controllers\ac
 
 Route::get('/acces_partenaire/actualites', '\App\Http\Controllers\acces_partenaire\actualitesController@actualites')->name('accesPartnersActualites.show');
 
-Route::post('/acces_partenaire/actualites/create', '\App\Http\Controllers\acces_partenaire\actualitesController@submitForm');
+Route::post('/acces_partenaire/actualites/create', '\App\Http\Controllers\acces_partenaire\actualitesController@store');
 
 Route::get('/acces_partenaire/actualites/{actualite}/destroy', '\App\Http\Controllers\acces_partenaire\actualitesController@destroy');
 

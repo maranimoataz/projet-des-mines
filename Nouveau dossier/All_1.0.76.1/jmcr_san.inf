@@ -1,0 +1,94 @@
+; JMCR.INF
+; Copyright (C) JMicron Technology Corp.
+;
+
+[Version]
+Signature="$Windows NT$"
+Class=MTD
+ClassGuid = {4d36e970-e325-11ce-bfc1-08002be10318}
+Provider=%COMPANY%
+DriverVer=04/26/2013, 1.0.3.0
+CatalogFile=jmcr.cat
+;PnpLockDown=1
+
+[DestinationDirs]
+DefaultDestDir   = 12  ; dirid = \Drivers on WinNT platforms
+JMCR.DriverFiles = 12
+JMCR.IconFiles   = 11
+
+[Manufacturer]
+%COMPANY%=JMCRModels
+
+[JMCRModels]
+;%PCI\VEN_197B&DEV_2392.DeviceDesc% = JM , PCI\VEN_197B&DEV_2392
+%PCI\VEN_197B&DEV_2392.DeviceDesc% = JM , PCI\VEN_197B&DEV_2392&SUBSYS_030015B7
+
+[ControlFlags]
+ExcludeFromSelect=*
+
+[JM.NT]
+CopyFiles=JMCR.DriverFiles
+CopyFiles=JMCR.IconFiles
+AddReg=Inst.AddReg
+
+[JMCR.DriverFiles]
+jmcr.sys
+
+[JMCR.IconFiles]
+jmcricon.dll
+
+[Inst.AddReg]
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskSanDisk_SD__________________","Label",,"SD"
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskSanDisk_SD__________________","NoSoftEject",0x00010001,0x00000001
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskSanDisk_SD__________________","Icons",0x00010000,"%SystemRoot%\\system32\\jmcricon.dll,-111"
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskSanDisk_SD__________________","NoMediaIcons",0x00010000,"%SystemRoot%\\system32\\jmcricon.dll,-111"
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskSanDisk_MMC_________________","Label",,"MMC"
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskSanDisk_MMC_________________","NoSoftEject",0x00010001,0x00000001
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskSanDisk_MMC_________________","Icons",0x00010000,"%SystemRoot%\\system32\\jmcricon.dll,-112"
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\PerHwIdStorage\SCSI#DiskSanDisk_MMC_________________","NoMediaIcons",0x00010000,"%SystemRoot%\\system32\\jmcricon.dll,-112"
+
+;[JM.NT.HW]
+;AddReg = JM_HW.AddReg
+
+;[JM_HW.AddReg]
+
+[JM.NT.Services]
+AddService = JMCR, 2, JM_Service_Inst, JM_EventLog_Inst
+
+[JM_Service_Inst]
+ServiceType    = 1      ; SERVICE_KERNEL_DRIVER
+StartType      = 3      ; SERVICE_DEMAND_START
+ErrorControl   = 1      ; SERVICE_ERROR_NORMAL
+;LoadOrderGroup = SCSI Miniport
+ServiceBinary  = %12%\jmcr.sys
+AddReg         = DriverAddReg
+
+[DriverAddReg]
+HKR, "Parameters\PnpInterface", "5", 0x00010001, 0x00000001
+HKR, "Parameters", "BusType", 0x00010001, 0x00000000
+HKR, "Parameters\Device", "CreateInitiatorLU", 0x00010001, 0x00000001
+HKR, "Private", "CustomId", 0x00010001, 0x00000781
+
+[JM_EventLog_Inst]
+AddReg = JM_EventLog_AddReg
+
+[JM_EventLog_AddReg]
+HKR,,EventMessageFile,0x00020000,"%SystemRoot%\System32\IoLogMsg.dll;%SystemRoot%\System32\drivers\jmcr.sys"
+HKR,,TypesSupported,0x00010001,7
+
+[SourceDisksNames]
+1 = %DISKNAME%,,,,
+
+[SourceDisksFiles]
+jmcr.sys     = 1
+jmcricon.dll = 1
+
+
+[strings]
+COMPANY="SanDisk Corporation"
+PCI\VEN_197B&DEV_2392.DeviceDesc="SanDisk Extreme Pro SDXC UHS-I ExpressCard Adapter"
+DISKNAME="SanDisk Driver Diskette"
+
+REG_MULTI_SZ    = 0x00010000
+REG_DWORD       = 0x00010001
+REG_SZ          = 0x00000000
