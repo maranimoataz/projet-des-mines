@@ -59,8 +59,8 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="modal fade" id="add_actualite" tabindex="-1" aria-labelledby="add_actualite_label" aria-hidden="true" >
-                        <div class="modal-dialog modal-lg" >
+                        <div class="modal fade" id="add_actualite" tabindex="-1" aria-labelledby="add_actualite_label" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                             <div class="modal-header">
                             <h4 class="modal-title" id="add_actualite_label"><b>Ajouter une nouvelle actualite</b></h4>
@@ -70,17 +70,16 @@
                             <div class="row justify-content-center mt-0">
                                 <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
                                 <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                                    <h2><strong>Sign Up Your User Account</strong></h2>
-                                <p>Fill all form field to go to next step</p>
+                                    <h2><strong>Remplissez tous les champs du formulaire pour passer à l'étape suivante</strong></h2>
                                 <div class="row">
                                     <div class="col-md-12 mx-0">
                                         <form id="msform" method="post" action="/acces_partenaire/actualites/create" enctype="multipart/form-data">
                                         @csrf
                                             <ul id="progressbar">
-                                                <li class="active" id="account"><strong>Account</strong></li>
-                                                <li id="personal"><strong>Personal</strong></li>
-                                                <li id="payment"><strong>Payment</strong></li>
-                                                <li id="confirm"><strong>Finish</strong></li>
+                                                <li class="active" id="account"><strong>Ajouter titre</strong></li>
+                                                <li id="personal"><strong>Ajouter resume</strong></li>
+                                                <li id="payment"><strong>Ajouter plus d'info</strong></li>
+                                                <li id="confirm"><strong>Finir</strong></li>
                                             </ul> <!-- fieldsets -->
                                             <fieldset>
                                                 <div class="form-card">
@@ -128,9 +127,18 @@
                                                             <small style="font-size: 10px;">Veulliez utiliser des photos de dimention 1028px*720px</small>
                                                         </div>
                                                     </div>
-                                                    <div class="mb-3 row">
+                                            <div class="mb-3 row">
                                                 <label class="col-sm-3 col-form-label">Type</label>
-                                                <input type="text" name="type" class="form-control" value="" >
+                                                <div class="col-sm-8">
+                                                    <div class="form-check form-check-inline">
+                                                        <input id="actualite" class="form-check-input" type="radio" name="type" value="actualite">
+                                                        <label class="form-check-label">Actualité</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input id="evenement"  class="form-check-input" type="radio" name="type" value="evenement">
+                                                        <label class="form-check-label">Événement</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label class="col-sm-3 col-form-label">Importance</label>
@@ -455,17 +463,18 @@
 }
 
 html {
-    height: 100%
+    height: 100%;
 }
 
 #grad1 {
     background-color: : #ffffff;
-    background-image: linear-gradient(120deg, #ffffff, #ffffff)
+    background-image: linear-gradient(120deg, #ffffff, #ffffff);
+    width:100%
 }
 #msform {
     text-align: center;
     position: relative;
-    margin-top: 20px
+    margin-top: 20px;
 }
 #msform fieldset .form-card {
     background: white;
@@ -474,8 +483,8 @@ html {
     box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
     padding: 20px 40px 30px 40px;
     box-sizing: border-box;
-    width: 94%;
-    margin: 0 3% 20px 3%;
+    width: 200%;
+    margin: 0 10% 20px 10%;
     position: relative
 }
 #msform fieldset {
@@ -522,7 +531,7 @@ html {
 }
 #msform .action-button {
     width: 100px;
-    background: skyblue;
+    background: #2F4F4F;
     font-weight: bold;
     color: white;
     border: 0 none;
@@ -533,7 +542,7 @@ html {
 }
 #msform .action-button:hover,
 #msform .action-button:focus {
-    box-shadow: 0 0 0 2px white, 0 0 0 3px skyblue
+    box-shadow: 0 0 0 2px white, 0 0 0 3px #2F4F4F
 }
 #msform .action-button-previous {
     width: 100px;
@@ -558,7 +567,7 @@ select.list-dt {
     margin: 2px
 }
 select.list-dt:focus {
-    border-bottom: 2px solid skyblue
+    border-bottom: 2px solid 
 }
 .card {
     border: none;
@@ -627,7 +636,7 @@ select.list-dt:focus {
 }
 #progressbar li.active:before,
 #progressbar li.active:after {
-    background: skyblue
+    background: #2F4F4F;
 }
 .radio-group {
     position: relative;
