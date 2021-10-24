@@ -36,6 +36,7 @@ class actualitesController extends Controller
             'type' => ['required', 'in:evenement,actualite'],
             'img' => ['required', 'image']
         ]);
+
         $imagePath = 'storage/'.\request('img')->store('uploads', 'public');
         $image = Image::make(public_path($imagePath))->fit(1280,720);
         $image->save();
