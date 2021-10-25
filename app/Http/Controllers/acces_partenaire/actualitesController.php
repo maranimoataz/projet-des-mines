@@ -20,25 +20,26 @@ class actualitesController extends Controller
         $this->middleware('auth');
     }
 
-    public function actualites() {
-        if(isset($_GET['q'])){
-            $actualites = actualite::where('titre','LIKE','%'.$_GET['q'].'%')->paginate(30);
-        }
-        else $actualites = actualite::paginate(30);
+    public function actualites()
+    {
+        if (isset($_GET['q'])) {
+            $actualites = actualite::where('titre', 'LIKE', '%' . $_GET['q'] . '%')->paginate(30);
+        } else $actualites = actualite::paginate(30);
         return view('acces_partenaire.actualites', compact('actualites'));
     }
-    public function store(){
+    public function store()
+    {
         $data = \request()->validate([
             'titre' => 'required',
-            'date' => ['required', 'date','date_format:Y-m-d'],
+            'date' => ['required', 'date', 'date_format:Y-m-d'],
             'resume' => ['required', 'string', 'min:130'],
             'importance' => ['required', 'digits_between:1,5'],
             'type' => ['required', 'in:evenement,actualite'],
             'img' => ['required', 'image']
         ]);
 
-        $imagePath = 'storage/'.\request('img')->store('uploads', 'public');
-        $image = Image::make(public_path($imagePath))->fit(1280,720);
+        $imagePath = 'storage/' . \request('img')->store('uploads', 'public');
+        $image = Image::make(public_path($imagePath));
         $image->save();
         $data['titre'] = ucfirst($data['titre']);
         $data['resume'] = ucfirst($data['resume']);
@@ -52,15 +53,16 @@ class actualitesController extends Controller
         ]);
         historique::create([
             'user_id' => Auth::user()->id,
-            'action' => 'Create a new actuality with the ID : ' . $actualite->id
+            'action' => "Une nouvelle actualité a été créée avec l'ID : " . $actualite->id
         ]);
         return redirect()->route('accesPartnersActualites.show')->with('success', 'The actuality with the ID ' .  $actualite->id . ' has been added successfully');
     }
 
-    public function update(actualite $actualite){
+    public function update(actualite $actualite)
+    {
         $data = \request()->validate([
             'titre' => 'required',
-            'date' => ['required', 'date','date_format:Y-m-d'],
+            'date' => ['required', 'date', 'date_format:Y-m-d'],
             'resume' => 'required',
             'importance' => ['required', 'digits_between:1,5'],
             'type' => ['required', 'in:evenement,actualite'],
@@ -68,13 +70,14 @@ class actualitesController extends Controller
         ]);
         $data['titre'] = ucfirst($data['titre']);
         $data['resume'] = ucfirst($data['resume']);
-        if(\request('img')) {
+        if (\request('img')) {
             $imagePath = 'storage/' . \request('img')->store('uploads', 'public');
-            $image = Image::make(public_path($imagePath))->fit(1280, 720);
+            $image = Image::make(public_path($imagePath));
             $image->save();
             $Image = ['img' => $imagePath];
         }
-        $actualite->update(array_merge([
+        $actualite->update(array_merge(
+            [
                 'titre' => $data['titre'],
                 'date' => $data['date'],
                 'resume' => $data['resume'],
@@ -85,16 +88,17 @@ class actualitesController extends Controller
         ));
         historique::create([
             'user_id' => Auth::user()->id,
-            'action' => 'Update the actuality with the ID : ' . $actualite->id
+            'action' => "Mettre à jour l'actualité avec l'ID : " . $actualite->id
         ]);
         return redirect()->route('accesPartnersActualites.show')->with('success', 'The actuality with the ID ' .  $actualite->id . ' has been updated successfully');
     }
 
-    public function destroy(actualite $actualite){
+    public function destroy(actualite $actualite)
+    {
         $actualite->delete();
         historique::create([
             'user_id' => Auth::user()->id,
-            'action' => 'Delete the actuality with the ID : ' . $actualite->id
+            'action' => "L'actualité avec l'ID" . $actualite->id . "a été supprimée"
         ]);
         return redirect()->route('accesPartnersActualites.show')->with('success', 'The actuality with the ID ' .  $actualite->id . ' has been deleted successfully');
     }
