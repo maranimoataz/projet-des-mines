@@ -323,18 +323,18 @@
                                         <td class="w-25 text-start">{{strip_tags(implode(' ', array_slice(explode(' ', $actualite->resume),  0, 30)))}} ...</td>
                                         <td>{{$actualite->importance}}</td>
                                         <td>{{$actualite->type == 'evenement' ? 'Événement' : 'Actualité'}}</td>
-                                        <td class="w-25">
+                                        <td class="alt">
                                             <a style="width: 100px;" href="/actualites/{{$actualite->id}}">
                                             <img src="{{url('img/actualites/oeil.PNG')}}" alt="display details" class="image"/> 
-                                            <span class="alt">Visualiser l'actualité</span>                               
+                                            <span class="acr">visualiser l'actualité</span>                               
                                             </a> <br /><br />
                                             <a style="width: 100px;" data-bs-toggle="modal" data-bs-target="#update_actualite" onclick="getUpdatingActualite({{$actualite->id}},'{{$actualite->titre}}','{{$actualite->date}}','{{$actualite->resume}}', {{$actualite->importance}},'{{$actualite->type}}')">
                                             <img  src="{{url('img/actualites/editer.png')}}" alt="edit actualite" class="image"/>
-                                            <span class="alt">modifier l'actualité </span>   
+                                            <span> modifier l'actualité </span>   
                                             </a><br /> <br />     
                                             <a style="width: 100px;" data-bs-toggle="modal" data-bs-target="#delete_actualite" onclick="getDeletingActualite({{$actualite->id}},'{{$actualite->titre}}')">
                                             <img  src="{{url('img/actualites/delete.png')}}" alt="delete actualite" class="image"/>
-                                            <span class="alt">supprimer l'actualité</span>   
+                                            <span> supprimer l'actualité</span>   
                                             </a><br /> <br />
                                         </td>
                                     </tr>
@@ -598,7 +598,10 @@
     }
     .alt{
         color : #616161;
-        text-indent: 50%;
+        text-align: justify;
+    }
+    .act{
+        color : #616161;
     }
 </style>
 <script>
