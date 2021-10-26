@@ -526,13 +526,13 @@
                                             <td>{{ $actualite->importance }}</td>
                                             <td>{{ $actualite->type == 'evenement' ? 'Événement' : 'Actualité' }}
                                             </td>
-                                            <td class="w-25">
+                                            <td class="alt">
                                                 <a style="width: 100px;" href="/actualites/{{$actualite->id}}">
-                                                <img src="{{url('img/actualites/oeil.PNG')}}" alt="display details" class="image"/> 
-                                                <span class="acr">visualiser l'actualité</span>                               
+                                                <img src="{{url('img/actualites/oeil.png')}}" alt="display details" class="image"/> 
+                                                <span>visualiser l'actualité</span>                               
                                                 </a> <br /><br />
                                                 <a style="width: 100px;" data-bs-toggle="modal" data-bs-target="#update_actualite" onclick="getUpdatingActualite({{$actualite->id}},'{{$actualite->titre}}','{{$actualite->date}}','{{$actualite->resume}}', {{$actualite->importance}},'{{$actualite->type}}')">
-                                                <img  src="{{url('img/actualites/editer.png')}}" alt="edit actualite" class="image"/>
+                                                <img  src="{{url('img/actualites/edit.png')}}" alt="edit actualite" class="image"/>
                                                 <span> modifier l'actualité </span>   
                                                 </a><br /> <br />     
                                                 <a style="width: 100px;" data-bs-toggle="modal" data-bs-target="#delete_actualite" onclick="getDeletingActualite({{$actualite->id}},'{{$actualite->titre}}')">
@@ -832,6 +832,14 @@
     .fit-image {
         width: 100%;
         object-fit: cover
+    }
+    .image{
+        width: 12%; 
+        height: 12%;
+    }
+    .alt{
+        color : #616161;
+        text-align: justify;
     }
 
 </style>
