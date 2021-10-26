@@ -261,3 +261,9 @@ function getUpdatingUser(id, first_name, last_name, email, institut) {
     document.getElementById("update_form").action =
         "/acces_partenaire/users/" + id + "/update";
 }
+
+// Validation Wizard
+
+function validerTitre() {
+    var titre = document.getElementById("add_titre").value;
+}

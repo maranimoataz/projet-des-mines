@@ -51,7 +51,7 @@
             @enderror
             <div class="justify-content-center row">
                 <div class="card card-body col-sm-12 col-md-10 bg-light align-self-center">
-                    <h1 class="m-md-5 p-5" style="font-size: 40px;">Actualités</h1>
+                    <h1 class="m-md-5" style="font-size: 40px;">Actualités</h1>
                     <div class="row pb-5">
                         <div class="pb-3 align-self-center col-sm-12 col-md-8 offset-md-1">
                             <form action="/acces_partenaire/actualites" method="get">
@@ -82,8 +82,8 @@
                                     <div class="row justify-content-center w-100 mt-0">
                                         <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center px-5 mt-3 mb-2 w-100">
                                             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                                                <h2><strong>Remplissez tous les champs du formulaire pour passer à
-                                                        l'étape suivante</strong></h2>
+                                                {{-- <h2><strong>Remplissez tous les champs du formulaire pour passer à
+                                                        l'étape suivante</strong></h2> --}}
                                                 <div class="row">
                                                     <div class="col-md-12 mx-0">
                                                         <form id="msform" class="msform" method="post"
@@ -92,10 +92,15 @@
                                                             @csrf
                                                             <ul id="progressbar" class="d-flex justify-content-center">
 
-                                                                <li class="active" id="account"><strong>Ajouter
-                                                                        titre</strong></li>
-                                                                <li id="personal"><strong>Ajouter resume</strong></li>
-                                                                <li id="payment"><strong>Ajouter plus d'info</strong>
+                                                                <li class="fas fa-edit active">
+
+                                                                    <strong>Ajouter
+                                                                        titre</strong>
+                                                                </li>
+                                                                <li class="fas fa-edit"><strong>Ajouter
+                                                                        resume</strong></li>
+                                                                <li class="fas fa-edit"><strong>Ajouter plus
+                                                                        d'info</strong>
                                                                 </li>
 
                                                             </ul>
@@ -112,21 +117,27 @@
                                                                                 id="add_titre" class="form-control"
                                                                                 placeholder="enter le titre">
                                                                         </div>
+                                                                        <div class="alert alert-danger"
+                                                                            id="add_titre_err" role="alert">
+                                                                            Veulliez saisir le titre !
+                                                                        </div>
                                                                     </div>
                                                                 </div>
 
 
                                                                 <input type="button" name="next"
-                                                                    class="next action-button" value="Suivant" />
+                                                                    onclick="validerTitre()" class="next action-button"
+                                                                    value="Suivant" />
                                                             </fieldset>
-
-
-
-
 
                                                             <fieldset>
                                                                 <div class="">
                                                                     <h2 class="fs-title">resume</h2>
+                                                                    <div class="alert alert-danger" id="add_resume_err"
+                                                                        role="alert">
+                                                                        Le résumé doit contenir au moins
+                                                                        130 caractères!!
+                                                                    </div>
                                                                     <div class="">
                                                                         <textarea type="text" name="resume"
                                                                             id="add_resume"
@@ -149,21 +160,31 @@
                                                                             });
                                                                         </script>
                                                                     </div>
-                                                                </div> <input type="button" name="previous"
+                                                                </div>
+                                                                <input type="button" name="previous"
                                                                     class="previous action-button-previous"
-                                                                    value="Précédent" /> <input type="button"
-                                                                    name="next" class="next action-button"
+                                                                    value="Précédent" />
+                                                                <input type="button" name="next"
+                                                                    onclick="validerResume()" class="next action-button"
                                                                     value="Suivant" />
                                                             </fieldset>
                                                             <fieldset>
                                                                 <div class="">
                                                                     <h2 class="fs-title">info</h2>
                                                                     <div class="mb-3 row">
+                                                                        <div class="alert alert-danger" id="add_img_err"
+                                                                            role="alert">
+                                                                            Ajouter une image !
+                                                                        </div>
+
                                                                         <label
                                                                             class="col-sm-3 col-form-label">Image</label>
                                                                         <div class="col-sm-8">
-                                                                            <input class="form-control mb-0" type="file"
-                                                                                name="img">
+                                                                            <input class="form-control mb-0"
+                                                                                accept="image/*" id="add_img"
+                                                                                type="file" name="img" required>
+                                                                            <small>Il est préférable d'ajouter une image
+                                                                                de taille (1280x720) !</small>
                                                                             {{-- <small style="font-size: 10px;">Veulliez
                                                                                 utiliser des photos de dimention
                                                                                 1028px*720px</small> --}}
@@ -180,7 +201,7 @@
                                                                             <div class="row">
                                                                                 <div class="col-1">
 
-                                                                                    <input id="actualite"
+                                                                                    <input id="actualite" checked
                                                                                         class="custom-control-input "
                                                                                         type="radio" name="type"
                                                                                         value="actualite">
@@ -225,12 +246,15 @@
                                                                             class="col-sm-3 col-form-label">Date</label>
                                                                         <div class="col-sm-8">
                                                                             <input type="date" name="date"
-                                                                                class="form-control" value="">
+                                                                                class="form-control"
+                                                                                value="<?php echo date('Y-m-d'); ?>">
                                                                         </div>
                                                                     </div>
-                                                                </div> <input type="button" name="previous"
+                                                                </div>
+                                                                <input type="button" name="previous"
                                                                     class="previous action-button-previous"
-                                                                    value="Précédent" /><button type="submit"
+                                                                    value="Précédent" />
+                                                                <button type="submit" onclick="return verifierImg();"
                                                                     class="next action-button w-25">Ajouter
                                                                     l'actualité</button>
                                                             </fieldset>
@@ -262,93 +286,6 @@
                     </div>
 
                     <!-- update actualite Modal -->
-                    {{-- <div class="modal fade" id="update_actualite" tabindex="-1"
-                        aria-labelledby="update_actualite_label" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="update_actualite_label"><b>Modifier une
-                                            actualite</b></h4>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <form id="update_form" class="form-outline" method="post"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    
-                                    <div class="modal-body">
-                                        <div class="mb-3 row">
-                                            <label class="col-sm-3 col-form-label">Id</label>
-                                            <div class="col-sm-8">
-                                                <input id="id" type="number" name="id" class="form-control-plaintext">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-sm-3 col-form-label">Titre</label>
-                                            <div class="col-sm-8">
-                                                <input id="titre" type="text" name="titre" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-sm-3 col-form-label">Resumé</label>
-                                            <div class="col-sm-8">
-                                                <input id="resume" type="text" name="resume" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-sm-3 col-form-label">Date</label>
-                                            <div class="col-sm-8">
-                                                <input id="date" type="date" name="date" class="form-control"
-                                                    value="">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-sm-3 col-form-label">Importance</label>
-                                            <div class="col-sm-8">
-                                                <select id="importance" class="form-select" name="importance">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="3">4</option>
-                                                    <option value="3">5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-sm-3 col-form-label">Type</label>
-                                            <div class="col-sm-8">
-                                                <div class="form-check form-check-inline">
-                                                    <input id="actualite" class="form-check-input" type="radio"
-                                                        name="type" value="actualite">
-                                                    <label class="form-check-label">Actualité</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input id="evenement" class="form-check-input" type="radio"
-                                                        name="type" value="evenement">
-                                                    <label class="form-check-label">Événement</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label class="col-sm-3 col-form-label">Image <small
-                                                    style="font-size: 10px;">(optionnelle)</small></label>
-                                            <div class="col-sm-8">
-                                                <input id="img" class="form-control" type="file" name="img">
-                                                <small style="font-size: 10px;">Veulliez utiliser des photos de
-                                                    dimention 1028px*720px</small>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Modifier la
-                                                actualite</button>
-                                            <button type="reset" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Annuler</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div> --}}
 
                     <div class="modal fade" id="update_actualite" tabindex="-1"
                         aria-labelledby="update_actualite_label" aria-hidden="true">
@@ -373,15 +310,20 @@
                                                             @method('PATCH')
                                                             <ul id="progressbar" class="d-flex justify-content-center">
 
-                                                                <li class="active" id="account"><strong>Modifier
-                                                                        titre</strong></li>
-                                                                <li id="personal"><strong>Modifier resume</strong></li>
-                                                                <li id="payment"><strong>Modifier les infos</strong>
+                                                                <li class="active fas fa-edit" id="titre_li">
+                                                                    <strong>Modifier
+                                                                        titre</strong>
+                                                                </li>
+                                                                <li id="resume_li" class="fas fa-edit">
+                                                                    <strong>Modifier resume</strong>
+                                                                </li>
+                                                                <li id="info_li" class="fas fa-edit"><strong>Modifier
+                                                                        les infos</strong>
                                                                 </li>
 
                                                             </ul>
                                                             <!-- fieldsets -->
-                                                            <fieldset>
+                                                            <fieldset id="f_titre">
                                                                 <div class="">
                                                                     <h2 class="fs-title">Titre</h2>
                                                                     <div class="mb-3 row">
@@ -399,11 +341,7 @@
                                                                     class="next action-button" value="Suivant" />
                                                             </fieldset>
 
-
-
-
-
-                                                            <fieldset>
+                                                            <fieldset id="f_resume">
                                                                 <div class="">
                                                                     <h2 class="fs-title">resume</h2>
                                                                     <div class="">
@@ -434,7 +372,8 @@
                                                                     name="next" class="next action-button"
                                                                     value="Suivant" />
                                                             </fieldset>
-                                                            <fieldset>
+
+                                                            <fieldset id="f_info">
                                                                 <div class="">
                                                                     <h2 class="fs-title">info</h2>
                                                                     <div class="mb-3 row">
@@ -511,7 +450,7 @@
                                                                 </div> <input type="button" name="previous"
                                                                     class="previous action-button-previous"
                                                                     value="Précédent" /><button type="submit"
-                                                                    class="next action-button w-25">Modofier
+                                                                    class="next action-button w-25">Modifier
                                                                     l'actualité</button>
                                                             </fieldset>
                                                         </form>
@@ -591,8 +530,8 @@
                                                 <a class="btn btn-success"
                                                     href="/actualites/{{ $actualite->id }}">Afficher</a> <br /><br />
                                                 <a class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#update_actualite"
-                                                    onclick="getUpdatingActualite({{ $actualite }})">Modifier</a><br />
+                                                    data-bs-target="#update_actualite" name="edit_actualite_btn"
+                                                    onclick="getUpdatingActualite({{ $actualite }}); ">Modifier</a><br />
                                                 <br />
                                                 <a class="btn btn-danger" data-bs-toggle="modal"
                                                     data-bs-target="#delete_actualite"
@@ -802,7 +741,8 @@
     }
 
     #progressbar .active {
-        color: #000000
+        color: #000000;
+
     }
 
     #progressbar li {
@@ -813,17 +753,17 @@
         position: relative
     }
 
-    #progressbar #account:before {
+    #progressbar .step1:before {
         font-family: FontAwesome;
         content: "\f023"
     }
 
-    #progressbar #personal:before {
+    #progressbar .step2:before {
         font-family: FontAwesome;
         content: "\f007"
     }
 
-    #progressbar #payment:before {
+    #progressbar .step3:before {
         font-family: FontAwesome;
         content: "\f09d"
     }
@@ -894,39 +834,128 @@
 
 </style>
 <script>
+    var move = true;
+    var count = 1;
+
+    function validerTitre(i) {
+        if (document.getElementById("add_titre").value.length == 0) {
+            move = false;
+        } else {
+            move = true;
+            count = 2
+        }
+
+    }
+
+    function validerResume() {
+        var body = tinymce.get("add_resume").getBody(),
+            text = tinymce.trim(body.innerText || body.textContent);
+        if (text.length < 130) {
+            move = false;
+        } else {
+            move = true;
+            count = 3;
+        }
+
+    }
+
+    function verifierImg() {
+
+        var formData = new FormData();
+        var file = document.getElementById("add_img").files[0];
+        formData.append("Filedata", file);
+
+        if (!file) {
+            move = false;
+            return false;
+        }
+
+        move = true;
+        count = 1;
+        return true;
+    }
+
+    function resetCount() {
+        move = true;
+    }
     $(document).ready(function() {
+
+        // Alerts :
+        $("#add_titre_err").hide();
+        $("#add_resume_err").hide();
+        $("#add_img_err").hide();
+
 
         var current_fs, next_fs, previous_fs; //fieldsets
         var opacity;
 
         var add_titre;
+        if ($('#update_actualite').hasClass('show')) {
+            alert("Modal is open");
+        }
+
+
+        $("a[name='edit_actualite_btn']").click(function() {
+            $("#f_resume , #f_info").css({
+                'display': 'none',
+                'position': 'relative',
+                'opacity': 0
+            });
+            $("#f_titre").css({
+                'display': 'block',
+                'position': 'relative',
+                'opacity': 1
+            });
+            $("#resume_li , #info_li").removeClass('active')
+        })
 
         $(".next").click(function() {
+            if (!move) {
+                switch (count) {
+                    case 1:
+                        $("#add_titre_err").show();
+                        break;
+                    case 2:
+                        $("#add_resume_err").show();
+                        break;
+                    case 3:
+                        $("#add_img_err").show();
+                        break;
+                    default:
+                        break;
+                }
 
-            current_fs = $(this).parent();
-            next_fs = $(this).parent().next();
+            } else {
+                $("#add_titre_err").hide();
+                $("#add_resume_err").hide();
+                $("#add_img_err").hide();
 
-            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+                current_fs = $(this).parent();
+                next_fs = $(this).parent().next();
 
-            //show the next fieldset
-            next_fs.show();
-            //hide the current fieldset with style
-            current_fs.animate({
-                opacity: 0
-            }, {
-                step: function(now) {
-                    // for making fielset appear animation
-                    opacity = 1 - now;
-                    current_fs.css({
-                        'display': 'none',
-                        'position': 'relative'
-                    });
-                    next_fs.css({
-                        'opacity': opacity
-                    });
-                },
-                duration: 600
-            });
+                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+
+                //show the next fieldset
+                next_fs.show();
+                //hide the current fieldset with style
+                current_fs.animate({
+                    opacity: 0
+                }, {
+                    step: function(now) {
+                        // for making fielset appear animation
+                        opacity = 1 - now;
+                        current_fs.css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+                        next_fs.css({
+                            'opacity': opacity
+                        });
+                    },
+                    duration: 600
+                });
+            }
         });
         $(".previous").click(function() {
 

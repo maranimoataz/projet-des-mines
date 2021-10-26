@@ -40,6 +40,9 @@ class actualitesController extends Controller
 
         $imagePath = 'storage/' . \request('img')->store('uploads', 'public');
         $image = Image::make(public_path($imagePath));
+        $image->resize(1280, 700, function ($constraint) {
+            $constraint->aspectRatio();
+        });
         $image->save();
         $data['titre'] = ucfirst($data['titre']);
         $data['resume'] = ucfirst($data['resume']);
@@ -73,6 +76,9 @@ class actualitesController extends Controller
         if (\request('img')) {
             $imagePath = 'storage/' . \request('img')->store('uploads', 'public');
             $image = Image::make(public_path($imagePath));
+            $image->resize(1280, 700, function ($constraint) {
+                $constraint->aspectRatio();
+            });
             $image->save();
             $Image = ['img' => $imagePath];
         }
