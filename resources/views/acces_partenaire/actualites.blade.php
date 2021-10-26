@@ -527,12 +527,12 @@
                                             <td>{{ $actualite->type == 'evenement' ? 'Événement' : 'Actualité' }}
                                             </td>
                                             <td class="alt">
+                                                <center>
                                                 <a style="width: 100px;" href="/actualites/{{ $actualite->id }}">
                                                     <img src="{{ url('img/actualites/oeil.png') }}"
                                                         alt="display details" class="image" />
                                                     <span>visualiser</span>
                                                 </a> <br /><br />
-
                                                 <a style="width: 100px;" name="edit_actualite_btn"
                                                     data-bs-toggle="modal" data-bs-target="#update_actualite"
                                                     onclick="getUpdatingActualite({{ $actualite }}); ">
@@ -547,6 +547,7 @@
                                                         alt="delete actualite" class="image" />
                                                     <span> supprimer</span>
                                                 </a><br /> <br />
+                                                </center>
                                             </td>
                                         </tr>
                                     @endforeach
