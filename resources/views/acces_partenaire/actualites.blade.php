@@ -48,19 +48,15 @@
                 <div class="card card-body col-sm-12 col-md-10 bg-light align-self-center">
                     <h1 class="m-md-5 p-5" style="font-size: 40px;">Actualités</h1>
                     <div class="row pb-5">
-                        <div class="search">
-                            <form action="/acces_partenaire/actualites" method="get" >
-                            <input type="submit" value="&#xf002;" class="search-btn fa ib-m">
-                                <div class="search-slide ib-m">
-                                <input type="text" placeholder="Enter your search" class="ib-m">
-                                <div class="search-close ib-m"><i class="fa fa-times"></i></div>
-                                </div>
-                                </div>
+                        <div class="pb-3 align-self-center col-sm-12 col-md-8 offset-md-1">
+                            <form action="/acces_partenaire/actualites" method="get">
+                                <input class="form-control" type="text" name="q"
+                                    placeholder="Rechercher une actualité">
                             </form>
                         </div>
                         <div class="pb-3 col-sm-12 col-md-2 d-grid gap-2">
                             <a type="button" data-bs-toggle="modal" data-bs-target="#add_actualite">
-                               <img src="{{url('img/actualites/add-button.png')}}" style="width:30%; height:100%;"/>
+                                <img src="{{url('img/actualites/add.png')}}"  style="width:30%; height:100%;"/>
                             </a>
                         </div>
                     </div>
@@ -87,8 +83,6 @@
                                                                 <li id="payment"><strong>Ajouter plus d'info</strong></li>
                                                                 
                                                             </ul>
-
-
                                                             <!-- fieldsets -->
                                                             <fieldset>
                                                                 <div class="">
@@ -100,8 +94,6 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-
                                                                 <input type="button" name="next" class="next action-button" value="Suivant" />
                                                             </fieldset>
                                                             <fieldset>
@@ -332,14 +324,17 @@
                                         <td>{{$actualite->importance}}</td>
                                         <td>{{$actualite->type == 'evenement' ? 'Événement' : 'Actualité'}}</td>
                                         <td class="w-25">
-                                            <a class="btn" href="/actualites/{{$actualite->id}}">
-                                            <img  src="{{url('img/actualites/detail.png')}}" alt="display details" class="image"/>                                
+                                            <a style="width: 100px;" href="/actualites/{{$actualite->id}}">
+                                            <img src="{{url('img/actualites/oeil.PNG')}}" alt="display details" class="image"/> 
+                                            <span class="alt">Visualiser l'actualité</span>                               
                                             </a> <br /><br />
-                                            <a class="btn" data-bs-toggle="modal" data-bs-target="#update_actualite" onclick="getUpdatingActualite({{$actualite->id}},'{{$actualite->titre}}','{{$actualite->date}}','{{$actualite->resume}}', {{$actualite->importance}},'{{$actualite->type}}')">
-                                            <img  src="{{url('img/actualites/edit-text.png')}}" alt="edit actualite" class="image"/>
+                                            <a style="width: 100px;" data-bs-toggle="modal" data-bs-target="#update_actualite" onclick="getUpdatingActualite({{$actualite->id}},'{{$actualite->titre}}','{{$actualite->date}}','{{$actualite->resume}}', {{$actualite->importance}},'{{$actualite->type}}')">
+                                            <img  src="{{url('img/actualites/editer.png')}}" alt="edit actualite" class="image"/>
+                                            <span class="alt">modifier l'actualité </span>   
                                             </a><br /> <br />     
-                                            <a class="btn" data-bs-toggle="modal" data-bs-target="#delete_actualite" onclick="getDeletingActualite({{$actualite->id}},'{{$actualite->titre}}')">
-                                            <img  src="{{url('img/actualites/bin.png')}}" alt="edit actualite" class="image"/>
+                                            <a style="width: 100px;" data-bs-toggle="modal" data-bs-target="#delete_actualite" onclick="getDeletingActualite({{$actualite->id}},'{{$actualite->titre}}')">
+                                            <img  src="{{url('img/actualites/delete.png')}}" alt="delete actualite" class="image"/>
+                                            <span class="alt">supprimer l'actualité</span>   
                                             </a><br /> <br />
                                         </td>
                                     </tr>
@@ -598,61 +593,65 @@
         object-fit: cover
     }
     .image{
-        width: 13.5%; 
-        height: 13.5%
+        width: 14%; 
+        height: 14%;
+    }
+    .alt{
+        color : #616161;
+        text-indent: 50%;
     }
 </style>
 <script>
     $(document).ready(function(){
-var current_fs, next_fs, previous_fs; //fieldsets
-var opacity;
-$(".next").click(function(){
-    current_fs = $(this).parent();
-    next_fs = $(this).parent().next();
-    $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-//show the next fieldset
-next_fs.show();
-//hide the current fieldset with style
-current_fs.animate({opacity: 0}, {
-    step: function(now) {
-// for making fielset appear animation
-opacity = 1 - now;
-current_fs.css({
-    'display': 'none',
-    'position': 'relative'
-});
-next_fs.css({'opacity': opacity});
-},
-duration: 600
-});
-});
-$(".previous").click(function(){
-    current_fs = $(this).parent();
-    previous_fs = $(this).parent().prev();
-//Remove class active
-$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-//show the previous fieldset
-previous_fs.show();
-//hide the current fieldset with style
-current_fs.animate({opacity: 0}, {
-    step: function(now) {
-// for making fielset appear animation
-opacity = 1 - now;
-current_fs.css({
-    'display': 'none',
-    'position': 'relative'
-});
-previous_fs.css({'opacity': opacity});
-},
-duration: 600
-});
-});
-$('.radio-group .radio').click(function(){
-    $(this).parent().find('.radio').removeClass('selected');
-    $(this).addClass('selected');
-});
-$(".submit").click(function(){
-    return false;
-})
+    var current_fs, next_fs, previous_fs; //fieldsets
+    var opacity;
+    $(".next").click(function(){
+        current_fs = $(this).parent();
+        next_fs = $(this).parent().next();
+        $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+    //show the next fieldset
+    next_fs.show();
+    //hide the current fieldset with style
+    current_fs.animate({opacity: 0}, {
+        step: function(now) {
+    // for making fielset appear animation
+    opacity = 1 - now;
+    current_fs.css({
+        'display': 'none',
+        'position': 'relative'
+    });
+    next_fs.css({'opacity': opacity});
+    },
+    duration: 600
+    });
+    });
+    $(".previous").click(function(){
+        current_fs = $(this).parent();
+        previous_fs = $(this).parent().prev();
+    //Remove class active
+    $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+    //show the previous fieldset
+    previous_fs.show();
+    //hide the current fieldset with style
+    current_fs.animate({opacity: 0}, {
+        step: function(now) {
+    // for making fielset appear animation
+    opacity = 1 - now;
+    current_fs.css({
+        'display': 'none',
+        'position': 'relative'
+    });
+    previous_fs.css({'opacity': opacity});
+    },
+    duration: 600
+    });
+    });
+    $('.radio-group .radio').click(function(){
+        $(this).parent().find('.radio').removeClass('selected');
+        $(this).addClass('selected');
+    });
+    $(".submit").click(function(){
+        return false;
+    })
 });
 </script>
