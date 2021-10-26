@@ -230,7 +230,7 @@
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
-                                                <label class="col-sm-3 col-form-label">Importance</label>
+                                                <label class="col-sm-3 col-form-label">importance</label>
                                                 <div class="col-sm-8">
                                                     <select id="importance" class="form-select" name="importance">
                                                         <option value="1">1</option>
