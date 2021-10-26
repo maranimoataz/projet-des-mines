@@ -526,17 +526,19 @@
                                             <td>{{ $actualite->importance }}</td>
                                             <td>{{ $actualite->type == 'evenement' ? 'Événement' : 'Actualité' }}
                                             </td>
-                                            <td class="w-25">
-                                                <a class="btn btn-success"
-                                                    href="/actualites/{{ $actualite->id }}">Afficher</a> <br /><br />
-                                                <a class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#update_actualite" name="edit_actualite_btn"
-                                                    onclick="getUpdatingActualite({{ $actualite }}); ">Modifier</a><br />
-                                                <br />
-                                                <a class="btn btn-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#delete_actualite"
-                                                    onclick="getDeletingActualite({{ $actualite->id }},'{{ $actualite->titre }}')">Supprimer</a><br />
-                                                <br />
+                                            <td class="alt">
+                                                <a style="width: 100px;" href="/actualites/{{$actualite->id}}">
+                                                <img src="{{url('img/actualites/oeil.png')}}" alt="display details" class="image"/> 
+                                                <span>visualiser l'actualité</span>                               
+                                                </a> <br /><br />
+                                                <a style="width: 100px;" data-bs-toggle="modal" data-bs-target="#update_actualite" onclick="getUpdatingActualite({{$actualite->id}},'{{$actualite->titre}}','{{$actualite->date}}','{{$actualite->resume}}', {{$actualite->importance}},'{{$actualite->type}}')">
+                                                <img  src="{{url('img/actualites/edit.png')}}" alt="edit actualite" class="image"/>
+                                                <span> modifier l'actualité </span>   
+                                                </a><br /> <br />     
+                                                <a style="width: 100px;" data-bs-toggle="modal" data-bs-target="#delete_actualite" onclick="getDeletingActualite({{$actualite->id}},'{{$actualite->titre}}')">
+                                                <img  src="{{url('img/actualites/delete.png')}}" alt="delete actualite" class="image"/>
+                                                <span> supprimer l'actualité</span>   
+                                                </a><br /> <br />
                                             </td>
                                         </tr>
                                     @endforeach
@@ -830,6 +832,14 @@
     .fit-image {
         width: 100%;
         object-fit: cover
+    }
+    .image{
+        width: 12%; 
+        height: 12%;
+    }
+    .alt{
+        color : #616161;
+        text-align: justify;
     }
 
 </style>
