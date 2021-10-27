@@ -147,6 +147,7 @@
                                                                         <script>
                                                                             tinymce.init({
                                                                                 selector: '#add_resume',
+                                                                                entity_encoding : 'raw',
                                                                                 height: 300,
                                                                                 plugins: [
                                                                                     'advlist autolink lists link charmap print preview anchor',
@@ -353,6 +354,7 @@
                                                                         <script>
                                                                             tinymce.init({
                                                                                 selector: '#edit_resume',
+                                                                                entity_encoding : 'raw',
                                                                                 height: 300,
                                                                                 plugins: [
                                                                                     'advlist autolink lists link charmap print preview anchor',
